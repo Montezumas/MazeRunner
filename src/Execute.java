@@ -7,7 +7,7 @@ public class Execute {
 		LCD.drawString("Plugin Test", 0, 4);
 		Delay.msDelay(5000);
 		//test
-		//Hello World
+		//Hello World hi
 	}
 
 }
