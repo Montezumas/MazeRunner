@@ -149,69 +149,7 @@ public class Search {
 
 		System.out.println("Goal state has been reached at a cost of: " + cost);
 	}
-
-	/*
-	 * 
-	 * EXTRA CREDIT
-	 * 
-	 */
-	public static int IDS(Problem init) {
-		for (int i = 1; i < Integer.MAX_VALUE; i*=5) {
-			expanded = 0;
-			if (DLS(init, i))
-				break;
-		}
-		return expanded;
-	}
-
-	private static int expanded;
-
-	private static boolean DLS(Problem init, int limit) {		
-		// Initializing required data structures
-		Stack<Node> stack = new Stack<Node>();
-		Node start = new Node(init, null, 0, 0, 0);
-		stack.push(start);
-
-		// variables for search
-		Node current;
-		Problem[] succ;
-		Node succNode;
-
-		// search algorithm
-		while (!stack.isEmpty()) {
-			current = stack.pop();
-			//current.state.printState();
-
-			if (current.state.isGoalState()) {
-				// goal reached
-				print(current);
-				return true;
-			}
-			
-			if(current.depth == limit) {
-				// cutoff reached
-				return false;
-			}
-
-			// not the goal state
-
-			succ = current.state.succStates();
-			for (int i = 0; i < succ.length; i++) {
-				if (succ[i] != null && !checkToRoot(current, succ[i])) {
-					succNode = new Node(succ[i], current, current.pathCost + succ[i].calcCost(current.state), 0, current.depth + 1);
-					stack.push(succNode);
-				}
-			}
-
-			// node has been fully expanded
-			expanded++;
-		}
-
-		// goal not reached and entire tree searched
-		System.out.println("Goal state not found");		
-		return false;
-	}
-
+	
 }
 
 /**
