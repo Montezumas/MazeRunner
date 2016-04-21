@@ -134,7 +134,6 @@ public class Search {
 	 */
 	private static void print(Node finalState) {
 		Stack<Node> st = new Stack<Node>();
-		double cost = finalState.pathCost;
 
 		while (finalState != null) {
 			// push the nodes
@@ -147,7 +146,7 @@ public class Search {
 			st.pop().state.printState();
 		}
 
-		System.out.println("Goal state has been reached at a cost of: " + cost);
+		System.out.println("Goal state has been reached\n");
 	}
 	
 }

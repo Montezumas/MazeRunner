@@ -21,35 +21,34 @@ public class MazeState implements Problem {
 
 	@Override
 	public Problem[] succStates() {		
+		// bitmap of walls
 		int walls = StaticMaze.maze[roboY][roboX];
-		boolean[] wallMap = new boolean[4];
-
-		wallMap[0] = (walls % 16 > 7); // left
-		wallMap[1] = (walls % 8 > 3); // up
-		wallMap[2] = (walls % 4 > 1); // right
-		wallMap[3] = (walls % 2 == 1); // down
 
 		MazeState[] succ = new MazeState[4];
 		
-		if (!wallMap[0]) {
+		// left
+		if (!(walls % 16 > 7)) {
 			if (roboX - 1 >= 0) {
 				succ[0] = new MazeState(roboX-1, roboY);
 			}
 		}
 		
-		if (!wallMap[1]) {
+		// up
+		if (!(walls % 8 > 3)) {
 			if (roboY - 1 >= 0) {
 				succ[1] = new MazeState(roboX, roboY-1);
 			}
 		}
 		
-		if (!wallMap[2]) {
+		// right
+		if (!(walls % 4 > 1)) {
 			if (roboX + 1 <= StaticMaze.maxX) {
 				succ[2] = new MazeState(roboX+1, roboY);
 			}
 		}
 		
-		if (!wallMap[3]) {
+		// down
+		if (!(walls % 2 == 1)) {
 			if (roboY + 1 <= StaticMaze.maxX) {
 				succ[3] = new MazeState(roboX, roboY+1);
 			}
@@ -78,9 +77,7 @@ public class MazeState implements Problem {
 		if(o == null) {
 			return false;
 		}
-		
 		MazeState equal = (MazeState) o;
-		
 		return (this.roboX == equal.roboX && this.roboY == equal.roboY);
 	}
 }

@@ -9,23 +9,25 @@ public class Execute {
 		
 		StaticMaze.maze = new int[][] {
 			{12,5,5,7},
-			{9,6,13,6},
+			{9,4,5,6},
 			{6,8,7,10},
 			{9,1,5,3}
 		};
 		
-		StaticMaze.initialY = 2;
 		StaticMaze.initialX = 0;
+		StaticMaze.initialY = 2;
 		
-		StaticMaze.finalY = 1;
 		StaticMaze.finalX = 2;
+		StaticMaze.finalY = 1;
 		
-		StaticMaze.maxY = 3;
 		StaticMaze.maxX = 3;
+		StaticMaze.maxY = 3;
 		
 		MazeState start = new MazeState();
 		
-		Search.DFS(start);	
+		Search.BFS(start,0);
+		
+		Search.DFS(start);
 	}
 
 }
