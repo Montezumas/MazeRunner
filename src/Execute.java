@@ -10,7 +10,7 @@ public class Execute {
 		StaticMaze.maze = new int[][] {
 			{12,5,4,7},
 			{9,6,9,6},
-			{14,8,7,10},
+			{6,8,7,10},
 			{9,1,5,3}
 		};
 		
@@ -25,8 +25,7 @@ public class Execute {
 		
 		MazeState start = new MazeState();
 		
-		Search.BFS(start, 0);
-		
+		Search.BFS(start, 0);	
 	}
 
 }

@@ -21,10 +21,9 @@ public class MazeState implements Problem {
 
 	@Override
 	public Problem[] succStates() {
-		MazeState[] succ = new MazeState[4];
-
+		System.out.println("Robot is at: " + roboX + ", " + roboY);
+		
 		int walls = StaticMaze.maze[roboX][roboY];
-
 		boolean[] wallMap = new boolean[4];
 
 		wallMap[0] = (walls % 16 > 7);
@@ -32,37 +31,31 @@ public class MazeState implements Problem {
 		wallMap[2] = (walls % 4 > 1);
 		wallMap[3] = (walls % 2 == 1);
 
-		for (int i = 0; i < wallMap.length; i++) {
-			if (!wallMap[i]) {
-				MazeState temp = null;
+		System.out.println(wallMap[0] + " " + wallMap[1] + " " + wallMap[2] + " " + wallMap[3]);
 
-				switch (i) {
-				case 0:
-					if(roboX - 1 >= 0) {
-						temp = new MazeState(roboX-1, roboY);
-					}
-					break;
-				case 1:
-					if(roboY + 1 <= StaticMaze.maxY) {
-						temp = new MazeState(roboX, roboY+1);
-					}
-					break;
-				case 2:
-					if(roboX + 1 <= StaticMaze.maxX) {
-						temp = new MazeState(roboX+1, roboY);
-					}
-					break;
-				case 3:
-					if(roboY - 1 >= 0) {
-						temp = new MazeState(roboX, roboY-11);
-					}
-					break;
-				default:
-					System.out.println("Error shizz in succState switch");
-					break;
-				}
-				
-				succ[i] = temp;
+		MazeState[] succ = new MazeState[4];
+		
+		if (!wallMap[0]) {
+			if (roboX - 1 >= 0) {
+				succ[0] = new MazeState(roboX - 1, roboY);
+			}
+		}
+		
+		if (!wallMap[1]) {
+			if (roboY + 1 <= StaticMaze.maxY) {
+				succ[1] = new MazeState(roboX, roboY + 1);
+			}
+		}
+		
+		if (!wallMap[2]) {
+			if (roboX + 1 <= StaticMaze.maxX) {
+				succ[2] = new MazeState(roboX + 1, roboY);
+			}
+		}
+		
+		if (!wallMap[3]) {
+			if (roboY - 1 >= 0) {
+				succ[3] = new MazeState(roboX, roboY - 1);
 			}
 		}
 
