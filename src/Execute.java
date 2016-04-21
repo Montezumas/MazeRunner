@@ -14,18 +14,18 @@ public class Execute {
 			{9,1,5,3}
 		};
 		
-		StaticMaze.initialX = 2;
-		StaticMaze.initialY = 0;
+		StaticMaze.initialY = 2;
+		StaticMaze.initialX = 0;
 		
-		StaticMaze.finalX = 1;
-		StaticMaze.finalY = 2;
+		StaticMaze.finalY = 1;
+		StaticMaze.finalX = 2;
 		
-		StaticMaze.maxX = 3;
 		StaticMaze.maxY = 3;
+		StaticMaze.maxX = 3;
 		
 		MazeState start = new MazeState();
 		
-		Search.BFS(start, 0);	
+		Search.DFS(start);	
 	}
 
 }

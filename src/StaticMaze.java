@@ -11,4 +11,5 @@ public class StaticMaze {
 	public static int maxY;
 	
 	public static int[][] maze;
+	
 }

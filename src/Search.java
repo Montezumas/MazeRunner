@@ -158,6 +158,7 @@ public class Search {
  * @author Robby
  */
 class Node implements Comparable<Node> {
+	
 	public Problem state;
 	public Node parent;
 	public int pathCost;

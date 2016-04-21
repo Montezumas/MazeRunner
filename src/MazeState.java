@@ -20,10 +20,8 @@ public class MazeState implements Problem {
 	}
 
 	@Override
-	public Problem[] succStates() {
-		System.out.println("Robot is at: " + roboX + ", " + roboY);
-		
-		int walls = StaticMaze.maze[roboX][roboY];
+	public Problem[] succStates() {		
+		int walls = StaticMaze.maze[roboY][roboX];
 		boolean[] wallMap = new boolean[4];
 
 		wallMap[0] = (walls % 16 > 7); // left
@@ -31,31 +29,29 @@ public class MazeState implements Problem {
 		wallMap[2] = (walls % 4 > 1); // right
 		wallMap[3] = (walls % 2 == 1); // down
 
-		System.out.println(wallMap[0] + " " + wallMap[1] + " " + wallMap[2] + " " + wallMap[3]);
-
 		MazeState[] succ = new MazeState[4];
 		
 		if (!wallMap[0]) {
-			if (roboY - 1 >= 0) {
-				succ[0] = new MazeState(roboX, roboY-1);
+			if (roboX - 1 >= 0) {
+				succ[0] = new MazeState(roboX-1, roboY);
 			}
 		}
 		
 		if (!wallMap[1]) {
-			if (roboX - 1 >= 0) {
-				succ[1] = new MazeState(roboX-1, roboY);
+			if (roboY - 1 >= 0) {
+				succ[1] = new MazeState(roboX, roboY-1);
 			}
 		}
 		
 		if (!wallMap[2]) {
-			if (roboY + 1 <= StaticMaze.maxY) {
-				succ[2] = new MazeState(roboX, roboY+1);
+			if (roboX + 1 <= StaticMaze.maxX) {
+				succ[2] = new MazeState(roboX+1, roboY);
 			}
 		}
 		
 		if (!wallMap[3]) {
-			if (roboX + 1 <= StaticMaze.maxY) {
-				succ[3] = new MazeState(roboX+1, roboY);
+			if (roboY + 1 <= StaticMaze.maxX) {
+				succ[3] = new MazeState(roboX, roboY+1);
 			}
 		}
 
@@ -74,7 +70,7 @@ public class MazeState implements Problem {
 
 	@Override
 	public void printState() {
-
+		System.out.println("Robot at: " + roboX + " " + roboY);
 	}
 
 	@Override
