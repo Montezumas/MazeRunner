@@ -1,8 +1,8 @@
 
 public class MazeState implements Problem {
 
-	int roboX;
-	int roboY;
+	public int roboX;
+	public int roboY;
 
 	public MazeState() {
 		this.roboX = StaticMaze.initialX;
@@ -26,36 +26,36 @@ public class MazeState implements Problem {
 		int walls = StaticMaze.maze[roboX][roboY];
 		boolean[] wallMap = new boolean[4];
 
-		wallMap[0] = (walls % 16 > 7);
-		wallMap[1] = (walls % 8 > 3);
-		wallMap[2] = (walls % 4 > 1);
-		wallMap[3] = (walls % 2 == 1);
+		wallMap[0] = (walls % 16 > 7); // left
+		wallMap[1] = (walls % 8 > 3); // up
+		wallMap[2] = (walls % 4 > 1); // right
+		wallMap[3] = (walls % 2 == 1); // down
 
 		System.out.println(wallMap[0] + " " + wallMap[1] + " " + wallMap[2] + " " + wallMap[3]);
 
 		MazeState[] succ = new MazeState[4];
 		
 		if (!wallMap[0]) {
-			if (roboX - 1 >= 0) {
-				succ[0] = new MazeState(roboX - 1, roboY);
+			if (roboY - 1 >= 0) {
+				succ[0] = new MazeState(roboX, roboY-1);
 			}
 		}
 		
 		if (!wallMap[1]) {
-			if (roboY + 1 <= StaticMaze.maxY) {
-				succ[1] = new MazeState(roboX, roboY + 1);
+			if (roboX - 1 >= 0) {
+				succ[1] = new MazeState(roboX-1, roboY);
 			}
 		}
 		
 		if (!wallMap[2]) {
-			if (roboX + 1 <= StaticMaze.maxX) {
-				succ[2] = new MazeState(roboX + 1, roboY);
+			if (roboY + 1 <= StaticMaze.maxY) {
+				succ[2] = new MazeState(roboX, roboY+1);
 			}
 		}
 		
 		if (!wallMap[3]) {
-			if (roboY - 1 >= 0) {
-				succ[3] = new MazeState(roboX, roboY - 1);
+			if (roboX + 1 <= StaticMaze.maxY) {
+				succ[3] = new MazeState(roboX+1, roboY);
 			}
 		}
 
@@ -77,4 +77,14 @@ public class MazeState implements Problem {
 
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if(o == null) {
+			return false;
+		}
+		
+		MazeState equal = (MazeState) o;
+		
+		return (this.roboX == equal.roboX && this.roboY == equal.roboY);
+	}
 }

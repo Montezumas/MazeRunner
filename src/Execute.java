@@ -8,8 +8,8 @@ public class Execute {
 //		Delay.msDelay(5000);
 		
 		StaticMaze.maze = new int[][] {
-			{12,5,4,7},
-			{9,6,9,6},
+			{12,5,5,7},
+			{9,6,13,6},
 			{6,8,7,10},
 			{9,1,5,3}
 		};
