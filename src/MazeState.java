@@ -27,31 +27,23 @@ public class MazeState implements Problem {
 		MazeState[] succ = new MazeState[4];
 		
 		// left
-		if (!(walls % 16 > 7)) {
-			if (roboX - 1 >= 0) {
-				succ[0] = new MazeState(roboX-1, roboY);
-			}
+		if (!(walls % 16 > 7) && roboX - 1 >= 0) {
+			succ[0] = new MazeState(roboX-1, roboY);	
 		}
 		
 		// up
-		if (!(walls % 8 > 3)) {
-			if (roboY - 1 >= 0) {
-				succ[1] = new MazeState(roboX, roboY-1);
-			}
+		if (!(walls % 8 > 3) && roboY - 1 >= 0) {
+			succ[1] = new MazeState(roboX, roboY-1);
 		}
 		
 		// right
-		if (!(walls % 4 > 1)) {
-			if (roboX + 1 <= StaticMaze.maxX) {
-				succ[2] = new MazeState(roboX+1, roboY);
-			}
+		if (!(walls % 4 > 1) && roboX + 1 <= StaticMaze.maxX) {
+			succ[2] = new MazeState(roboX+1, roboY);
 		}
 		
 		// down
-		if (!(walls % 2 == 1)) {
-			if (roboY + 1 <= StaticMaze.maxX) {
-				succ[3] = new MazeState(roboX, roboY+1);
-			}
+		if (!(walls % 2 == 1) && roboY + 1 <= StaticMaze.maxX) {
+			succ[3] = new MazeState(roboX, roboY+1);
 		}
 
 		return succ;

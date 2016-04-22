@@ -1,3 +1,5 @@
+import java.util.Stack;
+
 import lejos.hardware.lcd.LCD;
 import lejos.utility.Delay;
 
@@ -25,9 +27,9 @@ public class Execute {
 		
 		MazeState start = new MazeState();
 		
-		Search.BFS(start,0);
+		Stack<Node> pathBFS = Search.BFS(start,0);
 		
-		Search.DFS(start);
+		Stack<Node> pathDFS = Search.DFS(start);
 	}
 
 }

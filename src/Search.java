@@ -3,8 +3,8 @@ import java.util.Queue;
 import java.util.Stack;
 
 /**
- * Defines static search methods that can be used on problems
- * that are extensions of the Problem class
+ * Defines static search methods that can be used on problems that are
+ * extensions of the Problem class
  * 
  * @author Robby
  *
@@ -12,14 +12,15 @@ import java.util.Stack;
 public class Search {
 
 	/**
-	 * Breadth-first search of a problem
-	 * This will be A* search if flag > 0
+	 * Breadth-first search of a problem This will be A* search if flag > 0
 	 * 
-	 * @param init the initial state of a problem
-	 * @param flag defines the heuristic function to use
+	 * @param init
+	 *            the initial state of a problem
+	 * @param flag
+	 *            defines the heuristic function to use
 	 * @return the number of nodes expanded during search
 	 */
-	public static int BFS(Problem init, int flag) {
+	public static Stack<Node> BFS(Problem init, int flag) {
 		// initializing required data structures
 		Queue<Node> queue = new PriorityQueue<Node>();
 		Node start = new Node(init, null, 0, 0, 0);
@@ -29,7 +30,6 @@ public class Search {
 		Node current;
 		Problem[] succ;
 		Node succNode;
-		int expanded = 0;
 
 		// search algorithm
 		while (!queue.isEmpty()) {
@@ -38,35 +38,36 @@ public class Search {
 			if (current.state.isGoalState()) {
 				// goal reached, time to print
 				print(current);
-				return expanded;
+				return getStack(current);
 			}
 
 			// not the goal state
-			
+
 			succ = current.state.succStates();
 			for (int i = 0; i < succ.length; i++) {
 				if (succ[i] != null && !checkToRoot(current, succ[i])) {
-					succNode = new Node(succ[i], current, current.pathCost + succ[i].calcCost(current.state), succ[i].getHeuristic(flag), current.depth + 1);
+					succNode = new Node(succ[i], current, current.pathCost + succ[i].calcCost(current.state),
+							succ[i].getHeuristic(flag), current.depth + 1);
 					queue.add(succNode);
 				}
 			}
 
 			// node has been fully expanded
-			expanded++;
 		}
 
 		// goal not reached in while loop
 		System.out.println("Goal state not found");
-		return expanded;
+		return null;
 	}
 
 	/**
 	 * Depth-first search of a problem
 	 * 
-	 * @param init the initial state of a problem
+	 * @param init
+	 *            the initial state of a problem
 	 * @returns the number of nodes expanded during search
 	 */
-	public static int DFS(Problem init) {
+	public static Stack<Node> DFS(Problem init) {
 		// Initializing required data structures
 		Stack<Node> stack = new Stack<Node>();
 		Node start = new Node(init, null, 0, 0, 0);
@@ -76,7 +77,6 @@ public class Search {
 		Node current;
 		Problem[] succ;
 		Node succNode;
-		int expanded = 0;
 
 		// search algorithm
 		while (!stack.isEmpty()) {
@@ -85,7 +85,7 @@ public class Search {
 			if (current.state.isGoalState()) {
 				// goal reached
 				print(current);
-				return expanded;
+				return getStack(current);
 			}
 
 			// not the goal state
@@ -93,36 +93,38 @@ public class Search {
 			succ = current.state.succStates();
 			for (int i = 0; i < succ.length; i++) {
 				if (succ[i] != null && !checkToRoot(current, succ[i])) {
-					succNode = new Node(succ[i], current, current.pathCost + succ[i].calcCost(current.state), 0, current.depth + 1);
+					succNode = new Node(succ[i], current, current.pathCost + succ[i].calcCost(current.state), 0,
+							current.depth + 1);
 					stack.push(succNode);
 				}
 			}
 
 			// node has been fully expanded
-			expanded++;
 		}
 
 		// goal not reached in while loop
 		System.out.println("Goal state not found");
-		return expanded;
+		return null;
 	}
-	
+
 	/**
-	 * Check from iter to the root of the tree to see if
-	 * the state has already been searched in the tree
+	 * Check from iter to the root of the tree to see if the state has already
+	 * been searched in the tree
 	 * 
-	 * @param iter the start of the search
-	 * @param state the state to look for
+	 * @param iter
+	 *            the start of the search
+	 * @param state
+	 *            the state to look for
 	 * @return true = in tree, false = not in tree
 	 */
-	private static boolean checkToRoot(Node iter, Problem state) {		
-		while(iter != null) {
-			if(iter.state.equals(state)){
+	private static boolean checkToRoot(Node iter, Problem state) {
+		while (iter != null) {
+			if (iter.state.equals(state)) {
 				return true;
 			}
 			iter = iter.parent;
 		}
-		
+
 		return false;
 	}
 
@@ -130,7 +132,8 @@ public class Search {
 	 * prints the path from the passed in node to the head of the tree in
 	 * reverse order
 	 * 
-	 * @param finalState the state to be printed last
+	 * @param finalState
+	 *            the state to be printed last
 	 */
 	private static void print(Node finalState) {
 		Stack<Node> st = new Stack<Node>();
@@ -148,7 +151,26 @@ public class Search {
 
 		System.out.println("Goal state has been reached\n");
 	}
-	
+
+	/**
+	 * Construct a stack that is the path from the initial state to this final
+	 * state and return it.
+	 * 
+	 * @param finalState
+	 * @return
+	 */
+	private static Stack<Node> getStack(Node finalState) {
+		Stack<Node> st = new Stack<Node>();
+
+		while (finalState != null) {
+			// push the nodes
+			st.push(finalState);
+			finalState = finalState.parent;
+		}
+
+		return st;
+	}
+
 }
 
 /**
@@ -157,7 +179,7 @@ public class Search {
  * @author Robby
  */
 class Node implements Comparable<Node> {
-	
+
 	public Problem state;
 	public Node parent;
 	public int pathCost;
@@ -174,7 +196,7 @@ class Node implements Comparable<Node> {
 
 	@Override
 	public int compareTo(Node o) {
-		return (heuristic + pathCost) - (o.heuristic + o.pathCost) ;
+		return (heuristic + pathCost) - (o.heuristic + o.pathCost);
 	}
 
 }
