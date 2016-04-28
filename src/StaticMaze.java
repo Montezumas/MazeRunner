@@ -4,6 +4,8 @@ public class StaticMaze {
 	public static int initialX;
 	public static int initialY;
 	
+	public static int initialDir;
+	
 	public static int finalX;
 	public static int finalY;
 	
