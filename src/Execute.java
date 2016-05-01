@@ -1,10 +1,16 @@
 import java.util.Stack;
 
+import lejos.hardware.LED;
 import lejos.hardware.Sound;
+import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.motor.Motor;
 import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.SensorMode;
+import lejos.internal.ev3.EV3LED;
+import lejos.remote.ev3.RMIRemoteLED;
+import lejos.remote.ev3.RemoteEV3;
+import lejos.remote.ev3.RemoteLED;
 
 public class Execute {
 
@@ -50,7 +56,8 @@ public class Execute {
 		int nX = ((MazeState) nextNode.state).roboX;
 		int nY = ((MazeState) nextNode.state).roboY;
 		int nD = nodeChange(cX, cY, nX, nY, cD);
-		System.out.println("At: [" + cX + "," + cY + "] dir=" + cD + " | Go to: [" + nX + "," + nY + "] dir=" + nD);
+		System.out
+				.println("At: [" + cX + "," + cY + "] dir=" + cD + " need to go to: [" + nX + "," + nY + "] dir=" + nD);
 
 		// while(true) {
 		// Delay.msDelay(2000);
@@ -99,7 +106,8 @@ public class Execute {
 					} else {
 						System.out.println("At the goal!");
 						Sound.systemSound(false, 3);
-						System.exit(0);
+						LocalEV3.ev3.getLED().setPattern(EV3LED.COLOR_GREEN);
+						return;
 					}
 
 					atNode = true;
@@ -107,8 +115,9 @@ public class Execute {
 					nX = ((MazeState) nextNode.state).roboX;
 					nY = ((MazeState) nextNode.state).roboY;
 					nD = nodeChange(cX, cY, nX, nY, cD);
-					System.out.println(
-							"At: [" + cX + "," + cY + "] dir=" + cD + " | Go to: [" + nX + "," + nY + "] dir=" + nD);
+					System.out.println("At: [" + cX + "," + cY + "] dir=" + cD + " need to go to: [" + nX + "," + nY
+							+ "] dir=" + nD);
+
 				}
 			}
 
@@ -288,15 +297,6 @@ public class Execute {
 			total += array[i];
 		}
 		return (float) total / array.length;
-	}
-
-	private static String state;
-
-	public static void changeState(String state1) {
-		if (state == null || !state.equals(state1)) {
-			state = state1;
-			System.out.println("Current state: " + state);
-		}
 	}
 
 }

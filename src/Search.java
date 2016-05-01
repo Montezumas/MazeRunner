@@ -149,7 +149,7 @@ public class Search {
 			st.pop().state.printState();
 		}
 
-		System.out.println("Goal state has been reached\n");
+		System.out.println("Path has been found!\n");
 	}
 
 	/**
