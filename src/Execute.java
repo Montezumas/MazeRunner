@@ -1,6 +1,5 @@
 import java.util.Stack;
 
-import lejos.hardware.LED;
 import lejos.hardware.Sound;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.motor.Motor;
@@ -8,13 +7,18 @@ import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.SensorMode;
 import lejos.internal.ev3.EV3LED;
-import lejos.remote.ev3.RMIRemoteLED;
-import lejos.remote.ev3.RemoteEV3;
-import lejos.remote.ev3.RemoteLED;
 
 public class Execute {
 
-	public static EV3ColorSensor sens;
+	private static EV3ColorSensor sens;
+
+	/*
+	 * This factor is for: white = .24 brown/white = .17 (.14-.2) brown = .14
+	 * 
+	 * DEFAULT: white = .32 brown/white = .25 (.2-.28) brown = .19
+	 * 
+	 */
+	private static float lightFactor = 1.47f;
 
 	public static void main(String[] args) {
 		sens = new EV3ColorSensor(SensorPort.S2);
@@ -36,9 +40,9 @@ public class Execute {
 
 		MazeState start = new MazeState();
 
-		Stack<Node> pathBFS = Search.BFS(start, 0);
+		Stack<Node> path = Search.BFS(start, 0);
 
-		execute(pathBFS);
+		execute(path);
 	}
 
 	private static void execute(Stack<Node> path) {
@@ -78,9 +82,14 @@ public class Execute {
 
 			float threshold = getAverage(fThresholdArray);
 
+			threshold *= lightFactor;
+
 			// System.out.println("Threshold is: " + threshold);
 
 			if (threshold > 0.12) { // between brown and white
+				counter++;
+				//System.out.println(counter);
+				// System.out.println("Between threshold is: " + threshold);
 				float correction = 100 - (400 * threshold);
 
 				if (Math.abs(correction) < 5) {
@@ -93,10 +102,14 @@ public class Execute {
 					Motor.A.rotate((int) correction);
 				}
 
+				if (atNode) {
+					counter = 0;
+					//System.out.println("Counter reset");
+				}
 				atNode = false;
 			} else { // on something black
-				if (!atNode) {
-					System.out.println("Threshold was: " + threshold);
+				if (!atNode && counter > 20) {
+					//System.out.println("Threshold was: " + threshold);
 					cX = nX;
 					cY = nY;
 					cD = nD;
@@ -118,6 +131,23 @@ public class Execute {
 					System.out.println("At: [" + cX + "," + cY + "] dir=" + cD + " need to go to: [" + nX + "," + nY
 							+ "] dir=" + nD);
 
+				} else if (counter < 20) {
+					//System.out.println("Black but counter not high enough");
+					counter = 0;
+					switch (action) {
+					case 0:
+						turnLeft();
+						break;
+					case 1:
+						turnRight();
+						break;
+					case 2:
+						straight();
+						break;
+					default:
+						System.out.println("Action error");
+						break;
+					}
 				}
 			}
 
@@ -215,9 +245,13 @@ public class Execute {
 		return nD;
 	}
 
+	private static int counter = 0;
+	private static int action = -1;
+
 	private static void turnLeft() {
 		SensorMode temp = sens.getRGBMode();
 		float[] fArray = new float[temp.sampleSize()];
+		action = 0;
 
 		while (true) {
 
@@ -243,6 +277,7 @@ public class Execute {
 	private static void turnRight() {
 		SensorMode temp = sens.getRGBMode();
 		float[] fArray = new float[temp.sampleSize()];
+		action = 1;
 
 		while (true) {
 
@@ -268,6 +303,7 @@ public class Execute {
 	private static void straight() {
 		SensorMode temp = sens.getRGBMode();
 		float[] fArray = new float[temp.sampleSize()];
+		action = 2;
 
 		while (true) {
 
