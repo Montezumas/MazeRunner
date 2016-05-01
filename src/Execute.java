@@ -1,4 +1,3 @@
-import java.util.HashMap;
 import java.util.Stack;
 
 import lejos.hardware.Sound;
@@ -37,7 +36,7 @@ public class Execute {
 	}
 
 	private static void execute(Stack<Node> path) {
-		path.pop();
+		path.pop(); // pop the initial state
 		int cX = StaticMaze.initialX;
 		int cY = StaticMaze.initialY;
 		int cD = StaticMaze.initialDir;
@@ -51,8 +50,8 @@ public class Execute {
 		int nX = ((MazeState) nextNode.state).roboX;
 		int nY = ((MazeState) nextNode.state).roboY;
 		int nD = nodeChange(cX, cY, nX, nY, cD);
-		System.out.println(nD + " " + cX + " " + cY + " " + nX + " " + nY + " " + cD);
-		
+		System.out.println("At: [" + cX + "," + cY + "] dir=" + cD + " | Go to: [" + nX + "," + nY + "] dir=" + nD);
+
 		// while(true) {
 		// Delay.msDelay(2000);
 		// temp.fetchSample(fArray, 0);
@@ -70,11 +69,9 @@ public class Execute {
 				// System.out.println("fArray is: " + Arrays.toString(fArray));
 			}
 
-			// float threshold = fThresholdArray[0];
 			float threshold = getAverage(fThresholdArray);
-			// float threshold = getMax(fThresholdArray);
 
-			//System.out.println("Threshold is: " + threshold);
+			// System.out.println("Threshold is: " + threshold);
 
 			if (threshold > 0.12) { // between brown and white
 				float correction = 100 - (400 * threshold);
@@ -91,36 +88,37 @@ public class Execute {
 
 				atNode = false;
 			} else { // on something black
-				if (!atNode) {				
+				if (!atNode) {
 					System.out.println("Threshold was: " + threshold);
 					cX = nX;
 					cY = nY;
 					cD = nD;
-					
-					if(!path.isEmpty()) {
+
+					if (!path.isEmpty()) {
 						nextNode = path.pop();
 					} else {
 						System.out.println("At the goal!");
 						Sound.systemSound(false, 3);
 						System.exit(0);
 					}
-					
+
 					atNode = true;
 
 					nX = ((MazeState) nextNode.state).roboX;
-					nY = ((MazeState) nextNode.state).roboY;					
+					nY = ((MazeState) nextNode.state).roboY;
 					nD = nodeChange(cX, cY, nX, nY, cD);
-					System.out.println(nD + " " + cX + " " + cY + " " + nX + " " + nY + " " + cD);
+					System.out.println(
+							"At: [" + cX + "," + cY + "] dir=" + cD + " | Go to: [" + nX + "," + nY + "] dir=" + nD);
 				}
 			}
 
 		}
 
 	}
-	
+
 	private static int nodeChange(int cX, int cY, int nX, int nY, int cD) {
 		int nD = -1;
-		
+
 		if (cX - nX < 0 && cY - nY == 0) { // go right
 			switch (cD) {
 			case 0:
@@ -162,7 +160,7 @@ public class Execute {
 			}
 			nD = 3;
 		}
-		
+
 		if (cX - nX == 0 && cY - nY < 0) { // go down
 			switch (cD) {
 			case 0:
@@ -183,7 +181,7 @@ public class Execute {
 			}
 			nD = 2;
 		}
-		
+
 		if (cX - nX == 0 && nY - cY < 0) { // go up
 			switch (cD) {
 			case 0:
@@ -204,14 +202,14 @@ public class Execute {
 			}
 			nD = 0;
 		}
-		
+
 		return nD;
 	}
-	
+
 	private static void turnLeft() {
 		SensorMode temp = sens.getRGBMode();
 		float[] fArray = new float[temp.sampleSize()];
-		
+
 		while (true) {
 
 			float[] fThresholdArray = new float[3];
@@ -232,11 +230,11 @@ public class Execute {
 			}
 		}
 	}
-	
+
 	private static void turnRight() {
 		SensorMode temp = sens.getRGBMode();
 		float[] fArray = new float[temp.sampleSize()];
-		
+
 		while (true) {
 
 			float[] fThresholdArray = new float[3];
@@ -257,11 +255,11 @@ public class Execute {
 			}
 		}
 	}
-	
+
 	private static void straight() {
 		SensorMode temp = sens.getRGBMode();
 		float[] fArray = new float[temp.sampleSize()];
-		
+
 		while (true) {
 
 			float[] fThresholdArray = new float[3];
@@ -275,23 +273,13 @@ public class Execute {
 			float threshold = getAverage(fThresholdArray);
 
 			if (threshold < 0.12) { // on black
-					Motor.A.rotate(10);
-					Motor.D.rotate(10);
+				Motor.A.rotate(10);
+				Motor.D.rotate(10);
 
 			} else {
 				return;
 			}
 		}
-	}
-
-	private static float getMax(float[] array) {
-		float max = array[0];
-		for (int i = 1; i < array.length; i++) {
-			if (array[i] > max) {
-				max = array[i];
-			}
-		}
-		return max;
 	}
 
 	private static float getAverage(float[] array) {
@@ -300,26 +288,6 @@ public class Execute {
 			total += array[i];
 		}
 		return (float) total / array.length;
-	}
-
-	private static float getMode(float[] array) {
-		HashMap<Float, Integer> hm = new HashMap<Float, Integer>();
-		float max = 1;
-		float temp = array[0];
-		for (int i = 0; i < array.length; i++) {
-			if (hm.get(array[i]) != null) {
-				int count = hm.get(array[i]);
-				count = count + 1;
-				hm.put(array[i], count);
-				if (count > max) {
-					max = count;
-					temp = array[i];
-				}
-			} else {
-				hm.put(array[i], 1);
-			}
-		}
-		return temp;
 	}
 
 	private static String state;
