@@ -255,7 +255,7 @@ public class Execute {
 
 		while (true) {
 
-			float[] fThresholdArray = new float[3];
+			float[] fThresholdArray = new float[5];
 
 			for (int i = 0; i < fThresholdArray.length; i++) {
 				temp = sens.getRGBMode();
@@ -281,7 +281,7 @@ public class Execute {
 
 		while (true) {
 
-			float[] fThresholdArray = new float[3];
+			float[] fThresholdArray = new float[5];
 
 			for (int i = 0; i < fThresholdArray.length; i++) {
 				temp = sens.getRGBMode();
@@ -307,7 +307,7 @@ public class Execute {
 
 		while (true) {
 
-			float[] fThresholdArray = new float[3];
+			float[] fThresholdArray = new float[5];
 
 			for (int i = 0; i < fThresholdArray.length; i++) {
 				temp = sens.getRGBMode();
