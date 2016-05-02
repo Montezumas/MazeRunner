@@ -17,8 +17,14 @@ public class Execute {
 	 * 
 	 * DEFAULT: white = .32 brown/white = .25 (.2-.28) brown = .19
 	 * 
+	 * 1.17f or less in darkness
+	 * 1.47f in light
 	 */
 	private static float lightFactor = 1.47f;
+	
+	private static int counter = 0;
+	private static int action = -1;
+
 
 	public static void main(String[] args) {
 		sens = new EV3ColorSensor(SensorPort.S2);
@@ -245,9 +251,6 @@ public class Execute {
 		return nD;
 	}
 
-	private static int counter = 0;
-	private static int action = -1;
-
 	private static void turnLeft() {
 		SensorMode temp = sens.getRGBMode();
 		float[] fArray = new float[temp.sampleSize()];
@@ -255,7 +258,7 @@ public class Execute {
 
 		while (true) {
 
-			float[] fThresholdArray = new float[5];
+			float[] fThresholdArray = new float[3];
 
 			for (int i = 0; i < fThresholdArray.length; i++) {
 				temp = sens.getRGBMode();
@@ -281,7 +284,7 @@ public class Execute {
 
 		while (true) {
 
-			float[] fThresholdArray = new float[5];
+			float[] fThresholdArray = new float[3];
 
 			for (int i = 0; i < fThresholdArray.length; i++) {
 				temp = sens.getRGBMode();
@@ -307,7 +310,7 @@ public class Execute {
 
 		while (true) {
 
-			float[] fThresholdArray = new float[5];
+			float[] fThresholdArray = new float[3];
 
 			for (int i = 0; i < fThresholdArray.length; i++) {
 				temp = sens.getRGBMode();
